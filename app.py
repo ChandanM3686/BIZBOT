@@ -15,12 +15,12 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
-# ✅ PostgreSQL connection (Replace with actual credentials)
+# ✅ PostgreSQL connection for Render DB (adjust parameters as needed)
 db = psycopg2.connect(
     dbname="bizbot",
     user="bizbot_user",
     password="MjqN6ghqHgIMUkUPyJNvlA5qMpcTx32P",
-    host="dpg-cvinr456ubrc7389s4s0-a",  # Replace with actual DB host
+    host="dpg-cvinr456ubrc7389s4s0-a",  # Replace with your Render DB host
     port="5432"
 )
 db.autocommit = True
@@ -53,7 +53,7 @@ with db.cursor() as cursor:
     """)
     print("✅ Database tables created (if not already present)")
 
-# ✅ Extract text functions
+# ✅ Extraction functions
 def extract_text(file_path):
     file_extension = file_path.split('.')[-1].lower()
     if file_extension == "pdf":
@@ -94,16 +94,15 @@ def signup():
         gmail = request.form['Gmail']
         password = request.form['password']
 
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM users WHERE gmail=%s", (gmail,))
-        existing = cursor.fetchone()
+        with db.cursor() as cursor:
+            cursor.execute("SELECT * FROM users WHERE gmail=%s", (gmail,))
+            existing = cursor.fetchone()
 
-        if existing:
-            return "User already exists, please log in."
+            if existing:
+                return "User already exists, please log in."
 
-        cursor.execute("INSERT INTO users (name, gmail, password) VALUES (%s, %s, %s)",
-                       (name, gmail, password))
-        # With autocommit True, commit is automatic
+            cursor.execute("INSERT INTO users (name, gmail, password) VALUES (%s, %s, %s)",
+                           (name, gmail, password))
         session['user'] = gmail
         return redirect(url_for('setup_page'))
     
@@ -115,15 +114,15 @@ def login():
         gmail = request.form['email']
         password = request.form['password']
 
-        cursor = db.cursor()
-        cursor.execute("SELECT * FROM users WHERE gmail=%s AND password=%s", (gmail, password))
-        user = cursor.fetchone()
+        with db.cursor() as cursor:
+            cursor.execute("SELECT * FROM users WHERE gmail=%s AND password=%s", (gmail, password))
+            user = cursor.fetchone()
 
-        if user:
-            session['user'] = gmail
-            return redirect(url_for('setup_page'))
-        else:
-            return "Invalid login credentials."
+            if user:
+                session['user'] = gmail
+                return redirect(url_for('setup_page'))
+            else:
+                return "Invalid login credentials."
     
     return render_template('login.html')
 
@@ -134,15 +133,26 @@ def setup_page():
 
     if request.method == 'POST':
         gemini_key = request.form.get('api_key')
-        cursor = db.cursor()
-        cursor.execute("UPDATE users SET api_key=%s WHERE gmail=%s", (gemini_key, session['user']))
-        
-        # Process multiple file uploads using field name 'files'
-        if 'files' in request.files:
-            files = request.files.getlist('files')
-            for file in files:
+        with db.cursor() as cursor:
+            cursor.execute("UPDATE users SET api_key=%s WHERE gmail=%s", (gemini_key, session['user']))
+
+            # Process multiple file uploads using field 'files'
+            if 'files' in request.files:
+                files = request.files.getlist('files')
+                for file in files:
+                    if file and file.filename != "":
+                        filename = file.filename
+                        file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                        file.save(file_path)
+                        extracted_text = extract_text(file_path)
+                        cursor.execute("INSERT INTO user_docs (gmail, doc_text) VALUES (%s, %s)",
+                                       (session['user'], extracted_text))
+            # Fallback for single file upload using 'file'
+            elif 'file' in request.files:
+                file = request.files['file']
                 if file and file.filename != "":
-                    file_path = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
+                    filename = file.filename
+                    file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
                     file.save(file_path)
                     extracted_text = extract_text(file_path)
                     cursor.execute("INSERT INTO user_docs (gmail, doc_text) VALUES (%s, %s)",
@@ -158,27 +168,77 @@ def chat_page():
 
     if request.method == 'POST':
         user_message = request.form.get('message', '')
-        cursor = db.cursor()
-        cursor.execute("SELECT api_key FROM users WHERE gmail=%s", (session['user'],))
-        row = cursor.fetchone()
-        if not row or not row[0]:
-            return jsonify({"error": "No API key set. Please go to setup."}), 400
 
-        api_key = row[0]
-        cursor.execute("SELECT doc_text FROM user_docs WHERE gmail=%s", (session['user'],))
-        doc_rows = cursor.fetchall()
-        # Note: psycopg2 returns rows as tuples unless configured otherwise
-        context_data = "\n".join([r[0] for r in doc_rows])
+        with db.cursor() as cursor:
+            # Get the API key
+            cursor.execute("SELECT api_key FROM users WHERE gmail=%s", (session['user'],))
+            row = cursor.fetchone()
+            if not row or not row[0]:
+                return jsonify({"error": "No API key set. Please go to setup."}), 400
+            api_key = row[0]
 
+            # Retrieve uploaded documents
+            cursor.execute("SELECT doc_text FROM user_docs WHERE gmail=%s", (session['user'],))
+            doc_rows = cursor.fetchall()
+            context_data = "\n".join([r[0] for r in doc_rows])
+
+        # Configure the generative AI with the provided API key
         genai.configure(api_key=api_key)
         model = genai.GenerativeModel("gemini-2.0-flash")
 
-        prompt = f"Context: {context_data}\nUser: {user_message}"
-        response = model.generate_content(prompt)
+        # Determine agent role based on context keywords
+        lower_context = context_data.lower()
+        if "appointment" in lower_context:
+            agent_role = (
+                "You are a professional Clinic Assistant AI. "
+                "Handle appointment bookings, doctor availability, and scheduling. "
+                "Ensure responses are clear, structured, and professional."
+            )
+        elif "employee" in lower_context:
+            agent_role = (
+                "You are an HR Assistant AI. "
+                "Answer HR-related queries, policies, and employee concerns using the uploaded data. "
+                "Maintain a formal and professional tone."
+            )
+        elif "product" in lower_context:
+            agent_role = (
+                "You are a Business Consultant AI. "
+                "Provide product information, service details, and sales inquiries based on user data. "
+                "Keep responses engaging and business-oriented."
+            )
+        else:
+            agent_role = (
+                "You are a Knowledgeable AI Assistant. "
+                "Answer user queries professionally and use the uploaded data if relevant."
+            )
 
+        prompt = (
+            f"Role: {agent_role}\n\n"
+            f"Context (extracted from your uploaded business documents):\n{context_data}\n\n"
+            f"User: {user_message}\n\n"
+            "Instructions: If the user's question relates directly to the uploaded data, base your answer solely on that context. "
+            "Otherwise, provide a comprehensive answer using your general knowledge."
+        )
+
+        response = model.generate_content(prompt)
         return jsonify({"response": response.text})
-    
+
     return render_template('chat.html')
+
+@app.route('/widget')
+def widget():
+    return render_template('weight.html')
+
+@app.route('/widget-code')
+def widget_code():
+    embed_code = """
+<!-- Begin Chatbot Widget -->
+<iframe src="http://YOUR_DOMAIN/widget" style="border:none;width:350px;height:500px;"></iframe>
+<!-- End Chatbot Widget -->
+    """
+    response = make_response(embed_code)
+    response.headers["Content-Type"] = "text/plain"
+    return response
 
 @app.route('/logout')
 def logout():
