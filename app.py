@@ -103,6 +103,7 @@ def signup():
 
         cursor.execute("INSERT INTO users (name, gmail, password) VALUES (%s, %s, %s)",
                        (name, gmail, password))
+        # With autocommit True, commit is automatic
         session['user'] = gmail
         return redirect(url_for('setup_page'))
     
@@ -135,17 +136,17 @@ def setup_page():
         gemini_key = request.form.get('api_key')
         cursor = db.cursor()
         cursor.execute("UPDATE users SET api_key=%s WHERE gmail=%s", (gemini_key, session['user']))
-
+        
+        # Process multiple file uploads using field name 'files'
         if 'files' in request.files:
             files = request.files.getlist('files')
             for file in files:
-                if file and file.filename:
+                if file and file.filename != "":
                     file_path = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
                     file.save(file_path)
                     extracted_text = extract_text(file_path)
                     cursor.execute("INSERT INTO user_docs (gmail, doc_text) VALUES (%s, %s)",
                                    (session['user'], extracted_text))
-        
         return redirect(url_for('chat_page'))
     
     return render_template('setup.html')
@@ -166,6 +167,7 @@ def chat_page():
         api_key = row[0]
         cursor.execute("SELECT doc_text FROM user_docs WHERE gmail=%s", (session['user'],))
         doc_rows = cursor.fetchall()
+        # Note: psycopg2 returns rows as tuples unless configured otherwise
         context_data = "\n".join([r[0] for r in doc_rows])
 
         genai.configure(api_key=api_key)
