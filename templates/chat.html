@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat with BizBot AI</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Load a different CSS file depending on the user's template_choice -->
+  {% if template_choice == 'dark' %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='chat_dark.css') }}">
+  {% elif template_choice == 'modern' %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='chat_modern.css') }}">
+  {% else %}
+    <!-- Default or 'classic' template -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='chat.css') }}">
+  {% endif %}
+
+  <!-- Inline style to apply brand color as a CSS variable -->
+  <style>
+    :root {
+      --brand-color: {{ brand_color|default('#000000') }};
+    }
+    /* Example usage: 
+       You can reference var(--brand-color) in your CSS files or inline styles. */
+  </style>
+</head>
+<body>
+  <!-- Header with Navigation -->
+  <header class="header" style="background-color: var(--brand-color);">
+    <div class="container">
+      <nav class="navbar">
+        <div class="logo">
+          <!-- If user has uploaded a custom logo, display it; otherwise show default BizBot AI logo -->
+          {% if logo_url %}
+            <img src="{{ logo_url }}" alt="User Logo" class="user-logo" />
+          {% else %}
+            <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <a href="{{ url_for('index') }}" class="logo-text">BizBot AI</a>
+          {% endif %}
+        </div>
+        <div class="nav-menu">
+          <a href="{{ url_for('logout') }}" class="btn btn-secondary">Log Out</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Chat Section -->
+  <section class="chat-section">
+    <div class="container chat-container">
+      <!-- Chat Output Area -->
+      <div id="chatOutput" class="chat-output">
+        <!-- Chat messages will be appended here via JavaScript -->
+      </div>
+
+      <!-- Chat Form -->
+      <form id="chatForm" class="chat-form">
+        <textarea id="messageInput" class="message-input" placeholder="Type your message here..." rows="1" required></textarea>
+        <button type="submit" class="send-btn">Send</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Include your chat JS -->
+  <script src="{{ url_for('static', filename='chat.js') }}"></script>
+</body>
+</html>

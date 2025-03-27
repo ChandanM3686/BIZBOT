@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UI Customization Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Customize Your Chatbot Widget</h1>
+        <form method="POST">
+            <div class="form-group">
+                <label for="bg_color">Background Color:</label>
+                <input type="color" id="bg_color" name="bg_color" value="{{ bg_color }}">
+            </div>
+
+            <div class="form-group">
+                <label for="text_color">Text Color:</label>
+                <input type="color" id="text_color" name="text_color" value="{{ text_color }}">
+            </div>
+
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</body>
+</html>

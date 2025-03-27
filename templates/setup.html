@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BizBot - Setup</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='setup.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header & Navigation -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <div class="logo">
+          <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <a href="{{ url_for('index') }}" class="logo-text">BizBot AI</a>
+        </div>
+        <div class="nav-menu">
+          <a href="{{ url_for('logout') }}" class="btn btn-secondary">Log Out</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Setup Section -->
+  <section class="setup-section">
+    <div class="container">
+      <div class="setup-container">
+        <div class="setup-card">
+          <div class="setup-header">
+            <h1 class="setup-title">Setup Your  BizBot AI</h1>
+            <p class="setup-subtitle">Configure your AI assistant with your API key and knowledge base</p>
+          </div>
+          
+          <div class="setup-progress">
+            <div class="progress-step active">
+              <div class="step-number">1</div>
+              <div class="step-label">Setup</div>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step">
+              <div class="step-number">2</div>
+              <div class="step-label">Customize</div>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step">
+              <div class="step-number">3</div>
+              <div class="step-label">Deploy</div>
+            </div>
+          </div>
+          
+          <form class="setup-form" action="{{ url_for('setup_page') }}" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="api_key">Gemini API Key</label>
+              <div class="input-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+                </svg>
+                <input type="text" id="api_key" name="api_key" placeholder="Enter your Gemini API Key" required>
+              </div>
+              <div class="form-hint">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 16v-4"></path>
+                  <path d="M12 8h.01"></path>
+                </svg>
+                <span>You can find your API key in the Gemini AI dashboard</span>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="file">Upload Document</label>
+              <div class="file-upload-container">
+                <div class="file-upload-area" id="dropArea">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" x2="12" y1="3" y2="15"></line>
+                  </svg>
+                  <p class="upload-text">Drag and drop your file here or <span class="upload-browse">browse</span></p>
+                  <p class="upload-formats">Supported formats: PDF, DOCX, CSV</p>
+                  <input type="file" id="file" name="file" accept=".pdf,.docx,.csv" required class="file-input">
+                </div>
+                <div class="file-preview" id="filePreview">
+                  <div class="file-info">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    <div class="file-details">
+                      <p class="file-name">No file selected</p>
+                      <p class="file-size">0 KB</p>
+                    </div>
+                  </div>
+                  <button type="button" class="file-remove" id="removeFile">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M18 6 6 18"></path>
+                      <path d="m6 6 12 12"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="form-hint">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 16v-4"></path>
+                  <path d="M12 8h.01"></path>
+                </svg>
+                <span>Upload documents to train your bot with your business knowledge</span>
+              </div>
+            </div>
+            
+            
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary btn-full">Save & Proceed</button>
+            </div>
+          </form>
+          
+          <div class="setup-footer">
+            <p>Need help? <a href="#">Check our documentation</a> or <a href="#">contact support</a></p>
+          </div>
+        </div>
+        
+        <div class="setup-info">
+          <div class="info-container">
+            <h2 class="info-title">Why set up BIZBot?</h2>
+            
+            <div class="info-features">
+              <div class="info-feature">
+                <div class="feature-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                </div>
+                <div class="feature-content">
+                  <h3>24/7 Customer Support</h3>
+                  <p>Your AI assistant works around the clock to answer customer questions instantly.</p>
+                </div>
+              </div>
+              
+              <div class="info-feature">
+                <div class="feature-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L13 10h3.17a3 3 0 0 1 2.12 5.12l-1.95 1.95 1.95 1.95a3 3 0 1 1-4.24 4.24L12 21.17l-2.12 2.12a3 3 0 1 1-4.24-4.24l1.95-1.95-1.95-1.95a3 3 0 0 1 0-4.24A3 3 0 0 1 7.83 10H11l.25-.07A4 4 0 0 1 12 2Z"></path>
+                  </svg>
+                </div>
+                <div class="feature-content">
+                  <h3>Powered by Gemini AI</h3>
+                  <p>Leverage Google's advanced AI technology to provide accurate, helpful responses.</p>
+                </div>
+              </div>
+              
+              <div class="info-feature">
+                <div class="feature-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" x2="12" y1="3" y2="15"></line>
+                  </svg>
+                </div>
+                <div class="feature-content">
+                  <h3>Custom Knowledge Base</h3>
+                  <p>Train your bot with your business documents so it can provide specific information.</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="info-tip">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="m9 12 2 2 4-4"></path>
+              </svg>
+              <p>Complete this setup to start building your custom AI assistant in minutes!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="{{ url_for('static', filename='setup.js') }}"></script>
+</body>
+</html>

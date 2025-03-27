@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BIZBot - Custom AI Chatbots Made Easy</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header & Navigation -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <div class="logo">
+          <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <a href="{{ url_for('index') }}" class="logo-text">BIZBot</a>
+        </div>
+        
+        <button class="mobile-menu-btn" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        
+        <div class="nav-menu">
+          <a href="#features" class="nav-link">Features</a>
+          <a href="#how-it-works" class="nav-link">How It Works</a>
+          <a href="#pricing" class="nav-link">Pricing</a>
+          <a href="{{ url_for('login') }}" class="btn btn-secondary">Log In</a>
+          <a href="{{ url_for('signup') }}" class="btn btn-primary">Sign Up</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-text">
+          <span class="badge">No coding required</span>
+          <h1 class="hero-title">Empower Your Business with Custom AI Chatbots</h1>
+          <p class="hero-description">Turn your business data into an intelligent chat assistant in minutes—no technical skills needed.</p>
+          <div class="hero-cta">
+            <a href="{{ url_for('signup') }}" class="btn btn-primary btn-large">
+              Get Started
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+              </svg>
+            </a>
+            <a href="#demo" class="btn btn-secondary btn-large">Watch Demo</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="chat-demo">
+            <div class="chat-header">
+              <div class="chat-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span>BIZBot Assistant</span>
+              </div>
+              <button class="chat-close" aria-label="Close chat">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 6 6 18"></path>
+                  <path d="m6 6 12 12"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="chat-messages">
+              <div class="message bot">
+                <div class="message-avatar">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                </div>
+                <div class="message-content">
+                  <p>Hello! I'm your BIZBot assistant. How can I help you today?</p>
+                </div>
+              </div>
+              <div class="message user">
+                <div class="message-content">
+                  <p>What are your business hours?</p>
+                </div>
+              </div>
+              <div class="message bot typing">
+                <div class="message-avatar">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                </div>
+                <div class="message-content">
+                  <div class="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="chat-input">
+              <input type="text" placeholder="Type your message...">
+              <button class="send-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m22 2-7 20-4-9-9-4Z"></path>
+                  <path d="M22 2 11 13"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-shape"></div>
+  </section>
+
+  <!-- Brands Section -->
+  <section class="brands">
+    <div class="container">
+      <p class="brands-title"></p>
+      <div class="brands-logos">
+        <div class="brand-logo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="32" viewBox="0 0 100 32" fill="currentColor">
+            <path d="M14.4 7.2H18V24H14.4V7.2ZM39.2 24H35.6V16.8C35.6 14.4 34.4 13.2 32.4 13.2C30.4 13.2 28.8 14.4 28.8 17.2V24H25.2V7.2H28.8V12.8C29.6 11.2 31.6 10 33.6 10C37.2 10 39.2 12.4 39.2 16V24ZM48.4 24.4C44 24.4 41.2 21.2 41.2 17.2C41.2 13.2 44 10 48.4 10C52.8 10 55.6 13.2 55.6 17.2C55.6 21.2 52.8 24.4 48.4 24.4ZM48.4 21.2C50.8 21.2 52 19.6 52 17.2C52 14.8 50.8 13.2 48.4 13.2C46 13.2 44.8 14.8 44.8 17.2C44.8 19.6 46 21.2 48.4 21.2ZM70 24H66.4V16.8C66.4 14.4 65.2 13.2 63.2 13.2C61.2 13.2 59.6 14.4 59.6 17.2V24H56V10.4H59.6V12.8C60.4 11.2 62.4 10 64.4 10C68 10 70 12.4 70 16V24ZM84.4 24H80.8V21.6C79.6 23.6 77.6 24.4 75.6 24.4C72 24.4 70 22 70 18.4V10.4H73.6V17.6C73.6 20 74.8 21.2 76.8 21.2C78.8 21.2 80.4 20 80.4 17.2V10.4H84V24H84.4ZM96.8 24.4C92.4 24.4 89.6 21.2 89.6 17.2C89.6 13.2 92.4 10 96.8 10C101.2 10 104 13.2 104 17.2C104 21.2 101.2 24.4 96.8 24.4ZM96.8 21.2C99.2 21.2 100.4 19.6 100.4 17.2C100.4 14.8 99.2 13.2 96.8 13.2C94.4 13.2 93.2 14.8 93.2 17.2C93.2 19.6 94.4 21.2 96.8 21.2Z"/>
+          </svg>
+        </div>
+        <div class="brand-logo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="32" viewBox="0 0 100 32" fill="currentColor">
+            <path d="M20.8 24H17.2V7.2H20.8V24ZM32.8 24.4C28.4 24.4 25.6 21.2 25.6 17.2C25.6 13.2 28.4 10 32.8 10C37.2 10 40 13.2 40 17.2C40 21.2 37.2 24.4 32.8 24.4ZM32.8 21.2C35.2 21.2 36.4 19.6 36.4 17.2C36.4 14.8 35.2 13.2 32.8 13.2C30.4 13.2 29.2 14.8 29.2 17.2C29.2 19.6 30.4 21.2 32.8 21.2ZM54.4 24H50.8V16.8C50.8 14.4 49.6 13.2 47.6 13.2C45.6 13.2 44 14.4 44 17.2V24H40.4V10.4H44V12.8C44.8 11.2 46.8 10 48.8 10C52.4 10 54.4 12.4 54.4 16V24ZM68.8 24H65.2V21.6C64 23.6 62 24.4 60 24.4C56.4 24.4 54.4 22 54.4 18.4V10.4H58V17.6C58 20 59.2 21.2 61.2 21.2C63.2 21.2 64.8 20 64.8 17.2V10.4H68.4V24H68.8ZM81.2 24.4C76.8 24.4 74 21.2 74 17.2C74 13.2 76.8 10 81.2 10C85.6 10 88.4 13.2 88.4 17.2C88.4 21.2 85.6 24.4 81.2 24.4ZM81.2 21.2C83.6 21.2 84.8 19.6 84.8 17.2C84.8 14.8 83.6 13.2 81.2 13.2C78.8 13.2 77.6 14.8 77.6 17.2C77.6 19.6 78.8 21.2 81.2 21.2Z"/>
+          </svg>
+        </div>
+        <div class="brand-logo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="32" viewBox="0 0 100 32" fill="currentColor">
+            <path d="M14.4 7.2H18V24H14.4V7.2ZM39.2 24H35.6V16.8C35.6 14.4 34.4 13.2 32.4 13.2C30.4 13.2 28.8 14.4 28.8 17.2V24H25.2V7.2H28.8V12.8C29.6 11.2 31.6 10 33.6 10C37.2 10 39.2 12.4 39.2 16V24ZM48.4 24.4C44 24.4 41.2 21.2 41.2 17.2C41.2 13.2 44 10 48.4 10C52.8 10 55.6 13.2 55.6 17.2C55.6 21.2 52.8 24.4 48.4 24.4ZM48.4 21.2C50.8 21.2 52 19.6 52 17.2C52 14.8 50.8 13.2 48.4 13.2C46 13.2 44.8 14.8 44.8 17.2C44.8 19.6 46 21.2 48.4 21.2Z"/>
+          </svg>
+        </div>
+        <div class="brand-logo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="100" height="32" viewBox="0 0 100 32" fill="currentColor">
+            <path d="M20.8 24H17.2V7.2H20.8V24ZM32.8 24.4C28.4 24.4 25.6 21.2 25.6 17.2C25.6 13.2 28.4 10 32.8 10C37.2 10 40 13.2 40 17.2C40 21.2 37.2 24.4 32.8 24.4ZM32.8 21.2C35.2 21.2 36.4 19.6 36.4 17.2C36.4 14.8 35.2 13.2 32.8 13.2C30.4 13.2 29.2 14.8 29.2 17.2C29.2 19.6 30.4 21.2 32.8 21.2Z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Powerful Features</h2>
+        <p class="section-subtitle">Everything you need to create an effective AI assistant for your business</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" x2="12" y1="3" y2="15"></line>
+            </svg>
+          </div>
+          <h3 class="feature-title">Easy Data Upload</h3>
+          <p class="feature-description">Upload PDFs, Word documents, or text files to train your chatbot on your specific business information.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+              <line x1="12" x2="12" y1="19" y2="22"></line>
+            </svg>
+          </div>
+          <h3 class="feature-title">Natural Language</h3>
+          <p class="feature-description">Your chatbot understands context and can handle complex questions with human-like responses.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+              <path d="M7 7h.01"></path>
+              <path d="M17 7h.01"></path>
+              <path d="M7 17h.01"></path>
+              <path d="M17 17h.01"></path>
+            </svg>
+          </div>
+          
+        
+          <h3 class="feature-title">Easy Configuration</h3>
+          <p class="feature-description">Set up your chatbot in minutes with our intuitive interface. No technical knowledge required.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+          <h3 class="feature-title">Secure & Private</h3>
+          <p class="feature-description">Your data is encrypted and secure. We never share your information with third parties.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section id="how-it-works" class="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">How BIZBot Works</h2>
+        <p class="section-subtitle">Create your own AI chatbot in three simple steps - no coding required</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3 class="step-title">Upload Your Data</h3>
+            <p class="step-description">Simply upload your business documents, FAQs, or knowledge base. BIZBot will process and understand your content.</p>
+          </div>
+          <div class="step-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" x2="12" y1="3" y2="15"></line>
+            </svg>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3 class="step-title">Configure Your Bot</h3>
+            <p class="step-description">Customize your chatbot's appearance, behavior, and knowledge. Set your API key and define how your bot should respond.</p>
+          </div>
+          <div class="step-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3 class="step-title">Deploy & Engage</h3>
+            <p class="step-description">Embed your chatbot on your website with a simple code snippet or share a direct link with your customers.</p>
+          </div>
+          <div class="step-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+ 
+        
+
+  <!-- Pricing Section -->
+  <!--<section id="pricing" class="pricing">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Simple, Transparent Pricing</h2>
+        <p class="section-subtitle">Choose the plan that's right for your business</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3 class="pricing-title">Starter</h3>
+            <div class="pricing-price">
+              <span class="price">$29</span>
+              <span class="period">/month</span>
+            </div>
+            <p class="pricing-description">Perfect for small businesses just getting started</p>
+          </div>
+          <ul class="pricing-features">
+            <li class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+              <span>1 Chatbot</span>
+            </li>
+            <li class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+              <span>Up to 100MB data upload</span>
+            </li>
+            <li class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+              <span>1,000 messages/month</span>
+            </li>
+            <li class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+              <span>Basic customization</span>
+            </li>
+            <li class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+              <span>Email support</span>
+            </li>
+          </ul>
+          <a href="{{ url_for('signup') }}" class="btn btn-outline btn-full">Get Started</a>
+        </div>
+        <div class="pricing-card popular">
+          <div class="popular-badge">Most Popular</div>
+          <div class="pricing-header">
+            <h3 class="pricing-title">Professional</h3>
+            <div class="pricing-price">
+              <span class="price">$79</span>
+              <span class="period">/month</span>
+            </div>
+            <p class="pricing-description">Ideal for growing businesses with more needs</p>
+          </div>
+          <ul class="pricing-features">
+            <li class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+              <span>3 Chatbots</span>
+            </li>
+            <li class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+              <span>Up to 500MB data upload</span>
+            </li>
+            <li class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+              <span>5,000 messages/month</span>
+            </li>
+            <li class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+              <span>Advanced customization</span>
+            </li>
+            <li class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+              <span>Priority support</span>
+            </li>
+            <li class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+              <span>Analytics dashboard</span>
+            </li>
+          </ul>
+          <a href="{{ url_for('signup') }}" class="btn btn-primary btn-full">Get Started</a>
+        </div>
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3 class="pricing-title">Enterprise</h3>
+            <div class="pricing-price">
+              <span class="price">Custom</span>
+            </div>
+            <p class="pricing-description">For large organizations with specific requirements</p>
+          </div>
+          <ul class="pricing-features">
+            <li class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+              <span>Unlimited chatbots</span>
+            </li>
+            <li class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+              <span>Unlimited data upload</span>
+            </li>
+            <li class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+              <span>Unlimited messages</span>
+            </li>
+            <li class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+              <span>Custom integrations</span>
+            </li>
+            <li class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+              <span>Dedicated support</span>
+            </li>
+            <li class="feature-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5"></path>
+              </svg>
+              <span>SLA guarantees</span>
+            </li>
+          </ul>
+          <a href="#" class="btn btn-outline btn-full">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>--!>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2 class="cta-title">Ready to Transform Your Customer Support?</h2>
+        <p class="cta-description">Join hundreds of businesses using BIZBot to provide instant answers and support to their customers.</p>
+        <div class="cta-buttons">
+          <a href="{{ url_for('signup') }}" class="btn btn-primary btn-large">
+            Start Your Free Trial
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg>
+          </a>
+          <a href="#demo" class="btn btn-secondary btn-large">Schedule a Demo</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <!--<section id="faq" class="faq">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-subtitle">Find answers to common questions about BIZBot</p>
+      </div>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How does BIZBot learn from my business data?</span>
+            <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p>BIZBot uses advanced AI to analyze your uploaded documents, extracting key information and understanding the context. It processes PDFs, Word documents, text files, and more to build a knowledge base specific to your business.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Do I need technical skills to use BIZBot?</span>
+            <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p>Not at all! BIZBot is designed for non-technical users. Our intuitive interface guides you through the setup process, and embedding the chatbot on your website is as simple as copying and pasting a code snippet.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Can I customize how the chatbot looks?</span>
+            <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p>Yes! You can customize the colors, fonts, and overall appearance of your chatbot to match your brand. You can also add your logo and adjust the chat window size and position on your website.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How accurate are the chatbot responses?</span>
+            <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p>BIZBot uses state-of-the-art AI to provide highly accurate responses based on your business data. The more quality information you provide, the more accurate the responses will be. You can also review and improve responses over time.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Is my data secure?</span>
+            <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p>Absolutely. We take data security very seriously. All your data is encrypted both in transit and at rest. We never share your information with third parties, and you maintain full ownership of your data at all times.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Can I try BIZBot before committing?</span>
+            <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p>Yes! We offer a 14-day free trial with no credit card required. You can explore all the features and see how BIZBot can benefit your business before making a decision.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span class="logo-text">BIZBot</span>
+          </div>
+          <p class="footer-tagline">Custom AI chatbots made easy</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Twitter">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+              </svg>
+            </a>
+            <a href="#" class="social-link" aria-label="LinkedIn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                <rect width="4" height="12" x="2" y="9"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+            </a>
+            <a href="#" class="social-link" aria-label="Facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <div class="footer-links-column">
+            <h3 class="footer-links-title">Product</h3>
+            <ul class="footer-links-list">
+              <li><a href="#features">Features</a></li>
+              <li><a href="#pricing">Pricing</a></li>
+              <li><a href="#demo">Demo</a></li>
+              <li><a href="#faq">FAQ</a></li>
+            </ul>
+          </div>
+          <div class="footer-links-column">
+            <h3 class="footer-links-title">Company</h3>
+            <ul class="footer-links-list">
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-links-column">
+            <h3 class="footer-links-title">Legal</h3>
+            <ul class="footer-links-list">
+              <li><a href="#">Terms of Service</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Cookie Policy</a></li>
+              <li><a href="#">GDPR</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="copyright">© 2023 BIZBot. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="index.js"></script>
+</body>
+</html>

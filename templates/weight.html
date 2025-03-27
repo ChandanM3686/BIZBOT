@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot Widget</title>
+    <style>
+        /* Minimal styling */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .chat-container {
+            width: 100%;
+            height: 100vh; /* fill entire iframe */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            padding: 10px;
+        }
+        .chat-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .chat-messages {
+            flex-grow: 1;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        .chat-form {
+            display: flex;
+        }
+        .chat-form input[type="text"] {
+            flex-grow: 1;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        .chat-form button {
+            padding: 5px 10px;
+            margin-left: 5px;
+            border: none;
+            border-radius: 3px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+        .chat-form button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">My Embedded Chatbot</div>
+        <div class="chat-messages" id="chat-messages">
+            <!-- Chat messages will appear here -->
+        </div>
+        <form class="chat-form" id="chat-form" method="POST" action="/chat">
+            <input type="text" name="message" placeholder="Type your question..." autocomplete="off">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    
+    <!-- You can include a separate .js file or write inline scripts here. -->
+    <script>
+        // Basic script to handle form submission and display responses in the widget
+        const chatForm = document.getElementById('chat-form');
+        const chatMessages = document.getElementById('chat-messages');
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(chatForm);
+            const userMessage = formData.get('message');
+            
+            // Display user message
+            const userMsgDiv = document.createElement('div');
+            userMsgDiv.textContent = "You: " + userMessage;
+            chatMessages.appendChild(userMsgDiv);
+
+            // Send to server
+            const response = await fetch('/chat', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            
+            // Display bot reply
+            const botMsgDiv = document.createElement('div');
+            botMsgDiv.textContent = "Bot: " + (data.response || "No response");
+            chatMessages.appendChild(botMsgDiv);
+
+            // Clear input
+            chatForm.reset();
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+    </script>
+</body>
+</html>
